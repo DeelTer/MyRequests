@@ -7,11 +7,7 @@
   [![Build](https://img.shields.io/badge/builds-check%20it-green)](https://github.com/DeelTer/MyRequests/releases)
 </div>
 
-<img src="https://sun9-65.userapi.com/Wv9Mugi1mNOs4cmL2r1kNuY8tzZbrzxhLwpXAw/aTKX8_JFyxU.jpg" alt="MyRequests" align="center">
-
-<div align="left">
-  <h2>Commands</h2>
-  <p>* /myrequest reload - Reload config</p>
-  <p>* /myrequest send <id> - Send a request by the prototype in the config</p>
-  <p>* /myrequest get <id - Get response about request</p>
-</div>
+### Commands
+* /myrequest reload - Reload config
+* /myrequest send <id> - Send a request by the prototype in the config
+* /myrequest get <id - Get response about request
