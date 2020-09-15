@@ -13,6 +13,6 @@
       <p>● /myrequest reload - Reload config <br>● /myrequest send <id> - Send a request by the prototype in the config <br>● /myrequest get <id - Get response about request</p>
     </div>
   
-  <h2>Config</h2>   
+  <h2>Configuration</h2>   
   <p>values</p>
 </div>
