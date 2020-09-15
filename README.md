@@ -6,7 +6,7 @@
   <h3>Minecraft plugin easy requests sending</h3>
   
   [![Vk](https://img.shields.io/badge/vk-DeelTer-9cf)](https://vk.com/DeelTer/)
-  [![Build](https://img.shields.io/badge/builds-check%20it-green)](https://github.com/DeelTer/DonationAlerts/releases)
+  [![Build](https://img.shields.io/badge/builds-check%20it-green)](https://github.com/DeelTer/MyRequests/releases)
   
 </div>
 
