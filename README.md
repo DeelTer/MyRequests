@@ -9,8 +9,9 @@
 
 <div align="center">
   <h2>Commands</h2>
+  <p>● /myrequest reload - Reload config <br>● /myrequest send <id> - Send a request by the prototype in the config <br>● /myrequest get <id - Get response about request</p>
 </div>
-###
+
 * /myrequest reload - Reload config
 * /myrequest send <id> - Send a request by the prototype in the config
 * /myrequest get <id - Get response about request
