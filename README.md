@@ -10,6 +10,7 @@
 <div align="center">
   <h2>Commands</h2>
 </div>
+###
 * /myrequest reload - Reload config
 * /myrequest send <id> - Send a request by the prototype in the config
 * /myrequest get <id - Get response about request
