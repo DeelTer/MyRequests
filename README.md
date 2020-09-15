@@ -1,4 +1,4 @@
-<img src="https://i.loli.net/2018/05/17/5afd869c443ef.png" alt="Akarin Face" align="right">
+<img src="https://sun9-56.userapi.com/QbnFXBoLXsojNnA7bwn1NNIZTpLcVkaoT3ShkQ/Co3hGk_2V3U.jpg" alt="DeelTer Face" align="right">
 <div align="center">
   <h1>MyRequests</h1>
   <h3>Minecraft plugin for easy requests sending</h3>
