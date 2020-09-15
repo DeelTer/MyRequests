@@ -17,7 +17,6 @@
 <div align="center">
   <h2>Config</h2>
     <div align="left">
-      <h2>Settings</h2>
-      <p>● /myrequest reload - Reload config <br>● /myrequest send <id> - Send a request by the prototype in the config <br>● /myrequest get <id - Get response about request</p>
+      <p>some config values</p>
     </div>
 </div>
