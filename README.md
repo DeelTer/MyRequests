@@ -8,8 +8,10 @@
 </div>
 
 <div align="center">
-  <h2>Commands</h2>
-  <p>● /myrequest reload - Reload config <br>● /myrequest send <id> - Send a request by the prototype in the config <br>● /myrequest get <id - Get response about request</p>
+    <div align="left">
+      <h2>Commands</h2>
+      <p>● /myrequest reload - Reload config <br>● /myrequest send <id> - Send a request by the prototype in the config <br>● /myrequest get <id - Get response about request</p>
+    </div>
 </div>
 
 * /myrequest reload - Reload config
