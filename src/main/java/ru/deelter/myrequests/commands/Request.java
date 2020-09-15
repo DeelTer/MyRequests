@@ -27,6 +27,7 @@ public class Request implements CommandExecutor {
                 return true;
             }
 
+            /* Send request command */
             if (args[0].equalsIgnoreCase("send")) {
                 myRequest.send();
 
@@ -37,6 +38,7 @@ public class Request implements CommandExecutor {
                 }
                 Other.log(Config.MSG_SENDING_REQUEST.replace("ID", args[1]).replace("RESPONSE", response));
             }
+
             /* Getting response */
             else if (args[0].equalsIgnoreCase("get")) {
                 String response = myRequest.getResponse();
@@ -48,6 +50,7 @@ public class Request implements CommandExecutor {
             }
         }
 
+        /* Reload configuration command */
         if (args[0].equalsIgnoreCase("reload")) {
             if (!sender.isOp()) {
                 sender.sendMessage(Config.MSG_NO_PERMISSION);
@@ -58,6 +61,7 @@ public class Request implements CommandExecutor {
         return true;
     }
 
+    /* Just funny text format */
     private void sendRequestMessage(Player sender, String id, String response, int code) {
         TextComponent component = new TextComponent(Config.MSG_PLAYER_REQUEST.replace("ID", id));
         TextComponent resp = new TextComponent(Other.color("&f[&6RESPONSE&f]"));

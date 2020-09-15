@@ -27,11 +27,11 @@ public class LoggerManager {
             dateFolder.mkdir();
 
         File file = new File(dateFolder, id + ".txt");
-
         int i = 1;
         while (file.exists()) {
             file = new File(dateFolder, id + i++ + ".txt");
         }
+
         try {
             if(!file.exists())
                 file.createNewFile();

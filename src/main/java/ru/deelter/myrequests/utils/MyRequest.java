@@ -29,7 +29,6 @@ public class MyRequest {
 
     private String id;
     private final String url;
-
     private String response;
 
     private int responseCode;
@@ -83,7 +82,6 @@ public class MyRequest {
     }
 
     /* Set methods */
-
     public void setId(String id) {
         this.id = id;
     }

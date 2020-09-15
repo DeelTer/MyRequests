@@ -15,9 +15,9 @@ commands:
   myrequest:
     aliases: ["request", "mr"]
     description: main command
-    usage: /<command> [send|get] <id>
+    usage: /<command> [send|reload|get] <id>
     permission: myrequest.request
-    permission-message: You do not have permission!
+    permission-message: You do not have permission
 
 permissions:
   myrequest.request:

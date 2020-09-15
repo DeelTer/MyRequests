@@ -7,11 +7,13 @@ import ru.deelter.myrequests.utils.Other;
 
 public class Config {
 
+    /* Messages */
     public static String MSG_INVALID_ID;
     public static String MSG_SENDING_REQUEST;
     public static String MSG_NO_PERMISSION;
     public static String MSG_PLAYER_REQUEST;
 
+    /* Settings */
     public static boolean PLACEHOLDER_API = false;
     public static boolean CONSOLE_LOGS = false;
     public static boolean FILE_LOGS = false;
