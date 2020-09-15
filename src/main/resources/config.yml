@@ -1,0 +1,52 @@
+#########################################
+#                                       #
+#               MyRequests              #
+#                                       #
+#########################################
+
+#Contact with me:
+#
+#VK: vk.com/deelter
+#DISCORD: DeelTer#4782
+#TWITTER: twitter.com/roma200315
+#YOUTUBE: www.youtube.com/channel/UCRACU2JfOfClrlEHImv5pYw
+
+settings:
+  placeholder-api: false #If you want to use PAPI placeholders - put "true"
+  console-logs: true #Logs requests and other in console
+
+  file-logs: true #Logs requests in MyRequests/logs/ID.txt
+  plugin-api: false #RequestReceiveEvent and other (for dev)
+
+messages:
+  no-permission: "&c# &fYou need special permission"
+  invalid-id: "&c# &fYou entered the wrong ID"
+  sending-request: "&6# &fThe %ID% request was sent. Response: %RESPONSE%"
+  player-request: "&6# &fYou sent a request '&e%ID%&f': "
+
+requests:
+  test-get:
+    url: "my.site.ru"
+    type: "GET" #Can be "GET" or "POST"
+    headers:
+      - "Content-Type=application/x-www-form-urlencoded"
+      - "User-Agent=Mozilla/4.0 (compatible; MSIE 5.0;Windows98;DigExt)"
+    body:
+      - "user=root"
+      - "password=12345"
+    timer: #Automatic request activator
+      enable: false
+      seconds: 60
+
+  test-post:
+    url: "my.site.ru"
+    type: "POST"
+    headers:
+      - "Content-Type=application/x-www-form-urlencoded"
+      - "User-Agent=Mozilla/4.0 (compatible; MSIE 5.0;Windows98;DigExt)"
+    body:
+      - "user=root"
+      - "password=12345"
+    timer:
+      enable: false
+      seconds: 60
