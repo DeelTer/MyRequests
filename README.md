@@ -8,12 +8,16 @@
 </div>
 
 <div align="center">
+  <h2>Commands</h2>
     <div align="left">
-      <h2>Commands</h2>
       <p>● /myrequest reload - Reload config <br>● /myrequest send <id> - Send a request by the prototype in the config <br>● /myrequest get <id - Get response about request</p>
     </div>
 </div>
 
-* /myrequest reload - Reload config
-* /myrequest send <id> - Send a request by the prototype in the config
-* /myrequest get <id - Get response about request
+<div align="center">
+  <h2>Config</h2>
+    <div align="left">
+      <h2>Settings</h2>
+      <p>● /myrequest reload - Reload config <br>● /myrequest send <id> - Send a request by the prototype in the config <br>● /myrequest get <id - Get response about request</p>
+    </div>
+</div>
