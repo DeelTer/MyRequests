@@ -14,8 +14,8 @@
 settings:
   placeholder-api: false #If you want to use PAPI placeholders - put "true"
   console-logs: true #Logs requests and other in console
-
   file-logs: true #Logs requests in MyRequests/logs/ID.txt
+  
   plugin-api: false #RequestReceiveEvent and other (for dev)
 
 messages:

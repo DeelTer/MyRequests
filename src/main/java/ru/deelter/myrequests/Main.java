@@ -6,7 +6,6 @@ import ru.deelter.myrequests.utils.MyRequest;
 import ru.deelter.myrequests.utils.Other;
 
 import java.io.File;
-import java.util.Objects;
 
 public final class Main extends JavaPlugin {
 
@@ -29,7 +28,7 @@ public final class Main extends JavaPlugin {
         Config.reload();
         MyRequest.load();
 
-        Objects.requireNonNull(getCommand("myrequest")).setExecutor(new Request());
+        getCommand("myrequest").setExecutor(new Request());
         Other.log("&fPlugin successfully enabled");
     }
 

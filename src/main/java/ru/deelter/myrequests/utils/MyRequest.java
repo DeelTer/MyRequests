@@ -3,11 +3,12 @@ package ru.deelter.myrequests.utils;
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-
 import okhttp3.Response;
+
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+
 import ru.deelter.myrequests.Config;
 import ru.deelter.myrequests.Main;
 import ru.deelter.myrequests.api.RequestReceiveEvent;
@@ -19,23 +20,30 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class MyRequest {
+public class MyRequest implements Cloneable {
 
     private final OkHttpClient client = new OkHttpClient();
 
     private static final Map<String, MyRequest> requests = new HashMap<>();
-    private final Map<String, String> headers = new HashMap<>();
-    private final Map<String, String> body = new HashMap<>();
+
+    private final Map<String, String> header = new HashMap<>();
+    private Map<String, String> body = new HashMap<>();
 
     private String id;
     private final String url;
-    private String response;
+    private String type;
 
-    private int responseCode;
-    private boolean isGET = true;
+    private String response = "nothing";
+
+    private int responseCode = 0;
 
     public MyRequest(String url) {
         this.url = url;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 
     public static void load() {
@@ -87,11 +95,15 @@ public class MyRequest {
     }
 
     public void setType(String type) {
-        this.isGET = type.equalsIgnoreCase("GET");
+        this.type = type;
+    }
+
+    public void setBody(Map<String, String> body) {
+        this.body = body;
     }
 
     public void addHeader(String key, String value) {
-        headers.put(key, value);
+        header.put(key, value);
     }
 
     public void addBody(String key, String value) {
@@ -99,6 +111,18 @@ public class MyRequest {
     }
 
     /* Get methods */
+    public Map<String, String> getBody() {
+        return body;
+    }
+
+    public Map<String, String> getHeaders() {
+        return header;
+    }
+
+    public boolean isGet() {
+        return type.equalsIgnoreCase("GET");
+    }
+
     public String getResponse() {
         return response;
     }
@@ -123,11 +147,11 @@ public class MyRequest {
     public void send() {
         Request request;
         /* SEND GET */
-        if (isGET) {
+        if (isGet()) {
             Request.Builder builder = new Request.Builder();
             builder.url(url);
 
-            headers.forEach(builder::addHeader);
+            header.forEach(builder::addHeader);
             request = builder.build();
         }
         /* Send POST */
@@ -138,7 +162,7 @@ public class MyRequest {
             Request.Builder requestBuilder = new Request.Builder();
             requestBuilder.url(url);
 
-            headers.forEach(requestBuilder::addHeader);
+            header.forEach(requestBuilder::addHeader);
             final FormBody body = formBody.build();
             requestBuilder.post(body);
 
