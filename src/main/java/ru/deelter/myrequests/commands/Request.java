@@ -63,7 +63,8 @@ public class Request implements CommandExecutor, TabCompleter {
                     }
 
                     /* With space %20 */
-                    body.replace(entry[0], entry[1].replace(Config.SPACE_SYMBOL, " "));
+                    String value = Other.setPlaceholders(entry[1].replace(Config.SPACE_SYMBOL, " "));
+                    body.replace(entry[0], value);
                 }
                 myRequest.setBody(body);
             }

@@ -59,11 +59,11 @@ public class MyRequest implements Cloneable {
     }
 
     public void addHeader(String key, String value) {
-        header.put(key, value);
+        header.put(key, Other.setPlaceholders(value));
     }
 
     public void addBody(String key, String value) {
-        body.put(key, value);
+        body.put(key, Other.setPlaceholders(value));
     }
 
     /* Get methods */
@@ -130,7 +130,7 @@ public class MyRequest implements Cloneable {
             if(!response.isSuccessful())
                 return;
 
-            this.response = Objects.requireNonNull(response.body()).string();
+            this.response = response.body().string();
         } catch (IOException e) {
             e.printStackTrace();
         }
