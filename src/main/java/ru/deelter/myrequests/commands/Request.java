@@ -3,20 +3,20 @@ package ru.deelter.myrequests.commands;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.hover.content.Text;
-
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-
 import ru.deelter.myrequests.Config;
 import ru.deelter.myrequests.utils.MyRequest;
 import ru.deelter.myrequests.utils.Other;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class Request implements CommandExecutor {
+public class Request implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -46,39 +46,35 @@ public class Request implements CommandExecutor {
             return true;
         }
 
-        try {
-            myRequest = (MyRequest) myRequest.clone();
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
+        myRequest = myRequest.clone();
 
-            /* Send request command */
-            if (args[0].equalsIgnoreCase("send")) {
-                if (args.length == 3) {
+        /* Send request command */
+        if (args[0].equalsIgnoreCase("send")) {
+            if (args.length == 3) {
 
-                    Map<String, String> body = new HashMap<>(myRequest.getBody());
-                    String[] params = args[2].split(",");
-                    for (String param : params) {
+                Map<String, String> body = new HashMap<>(myRequest.getBody());
+                String[] params = args[2].split(",");
+                for (String param : params) {
 
-                        String[] entry = param.split("=");
-                        if (!body.containsKey(entry[0])) {
-                            sender.sendMessage(Other.color("&cПараметр &6" + entry[0] + "&c не найден"));
-                            return true;
-                        }
-
-                        /* With space %20 */
-                        body.replace(entry[0], entry[1].replace("%20", " "));
+                    String[] entry = param.split("=");
+                    if (!body.containsKey(entry[0])) {
+                        sender.sendMessage(Other.color("&cПараметр &6" + entry[0] + "&c не найден"));
+                        return true;
                     }
-                    myRequest.setBody(body);
-                }
 
-                myRequest.send();
-                if (sender instanceof Player) {
-                    sendRequestMessage((Player) sender, args[1], myRequest.getResponse(), myRequest.getResponseCode());
-                    return true;
+                    /* With space %20 */
+                    body.replace(entry[0], entry[1].replace(Config.SPACE_SYMBOL, " "));
                 }
-                Other.log(Config.MSG_SENDING_REQUEST.replace("%ID%", args[1]).replace("%RESPONSE%", myRequest.getResponse()));
+                myRequest.setBody(body);
             }
+
+            myRequest.send();
+            if (sender instanceof Player) {
+                sendRequestMessage((Player) sender, args[1], myRequest.getResponse(), myRequest.getResponseCode());
+                return true;
+            }
+            Other.log(Config.MSG_SENDING_REQUEST.replace("%ID%", args[1]).replace("%RESPONSE%", myRequest.getResponse()));
+        }
 
             /* Getting response
             else if (args[0].equalsIgnoreCase("get")) {
@@ -103,5 +99,10 @@ public class Request implements CommandExecutor {
         component.addExtra(resp);
 
         sender.sendMessage(component);
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        return null;
     }
 }

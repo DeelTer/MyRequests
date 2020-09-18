@@ -4,16 +4,12 @@ import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
-
+import org.jetbrains.annotations.NotNull;
 import ru.deelter.myrequests.Config;
 import ru.deelter.myrequests.Main;
 import ru.deelter.myrequests.api.RequestReceiveEvent;
 import ru.deelter.myrequests.utils.managers.LoggerManager;
-import ru.deelter.myrequests.utils.managers.TimerManager;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -23,17 +19,16 @@ import java.util.Objects;
 public class MyRequest implements Cloneable {
 
     private final OkHttpClient client = new OkHttpClient();
-
     private static final Map<String, MyRequest> requests = new HashMap<>();
 
     private final Map<String, String> header = new HashMap<>();
     private Map<String, String> body = new HashMap<>();
 
-    private String id;
     private final String url;
+    private String id;
     private String type;
 
-    private String response = "nothing";
+    private String response = "none";
 
     private int responseCode = 0;
 
@@ -41,52 +36,13 @@ public class MyRequest implements Cloneable {
         this.url = url;
     }
 
-    @Override
-    public Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
-
-    public static void load() {
-
-        FileConfiguration config = Main.getInstance().getConfig();
-        ConfigurationSection requests = config.getConfigurationSection("requests");
-        if (requests == null) {
-            Other.log("&cВ конфиге нет раздела 'requests'");
-            return;
+    @NotNull
+    public MyRequest clone() {
+        try {
+            return (MyRequest) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new Error(e);
         }
-
-        requests.getKeys(false).forEach(request -> {
-            ConfigurationSection settings = config.getConfigurationSection("requests." + request);
-            if (settings == null) {
-                Other.log("&cВ конфиге нет раздела '" + request + "'");
-                return;
-            }
-
-            MyRequest myRequest = new MyRequest(settings.getString("url"));
-            myRequest.setType(Objects.requireNonNull(settings.getString("type")));
-            myRequest.setId(request);
-
-            /* Add header */
-            settings.getStringList("headers").forEach(header -> {
-                String[] param = header.split("=");
-                myRequest.addHeader(param[0], Other.setPlaceholders(param[1]));
-            });
-
-            /* Add body */
-            settings.getStringList("body").forEach(header -> {
-                String[] param = header.split("=");
-                myRequest.addBody(param[0], Other.setPlaceholders(param[1]));
-            });
-
-            myRequest.register();
-
-            /* Check timers */
-            if (settings.getBoolean("timer.enable")) {
-                TimerManager.startTimer(myRequest, settings.getInt("timer.seconds"));
-            }
-
-            Other.log("&fЗарегистрирован запрос '&e" + request + "&f'");
-        });
     }
 
     /* Set methods */

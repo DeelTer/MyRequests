@@ -17,6 +17,7 @@ settings:
   file-logs: true #Logs requests in MyRequests/logs/ID.txt
   
   plugin-api: false #RequestReceiveEvent and other (for dev)
+  space-symbol: "%20"
 
 messages:
   no-permission: "&c# &fYou need special permission"
