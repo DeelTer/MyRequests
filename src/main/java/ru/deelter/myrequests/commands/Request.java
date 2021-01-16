@@ -7,11 +7,13 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
 import ru.deelter.myrequests.Config;
 import ru.deelter.myrequests.utils.MyRequest;
 import ru.deelter.myrequests.utils.Other;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class Request implements CommandExecutor {
 
@@ -47,43 +49,30 @@ public class Request implements CommandExecutor {
 
         /* Send request command */
         if (args[0].equalsIgnoreCase("send")) {
-            if (args.length == 3) {
+            if (args.length < 3)
+                return true;
 
-                HashMap body = new HashMap<>(myRequest.getBody());
-                String[] params = args[2].split(",");
-                for (String param : params) {
-
-                    String[] entry = param.split("=");
-                    if (!body.containsKey(entry[0])) {
-                        sender.sendMessage(Other.color("&cПараметр &6" + entry[0] + "&c не найден"));
-                        return true;
-                    }
-
-                    /* With space %20 */
-                    String value = Other.setPlaceholders(entry[1].replace(Config.SPACE_SYMBOL, " "));
-                    body.replace(entry[0], value);
+            String str = String.join(" ", args).substring(args[0].length() + args[1].length() + 2);
+            Map<String, String> body = new HashMap<String, String>(myRequest.getBody());
+            String[] params = str.split(";");
+            for (String param : params) {
+                String[] entry = param.split("=");
+                if (!body.containsKey(entry[0])) {
+                    sender.sendMessage(Other.color("&6" + args[1] + ":&c параметр &6" + entry[0] + "&c не найден"));
+                    continue;
                 }
-                myRequest.setBody(body);
+                String value = Other.setPlaceholders(entry[1]);
+                body.replace(entry[0], value);
             }
-
+            myRequest.setBody(body);
             myRequest.send();
+
             if (sender instanceof Player) {
                 sendRequestMessage((Player) sender, args[1], myRequest.getResponse(), myRequest.getResponseCode());
                 return true;
             }
             Other.log(Config.MSG_SENDING_REQUEST.replace("%ID%", args[1]).replace("%RESPONSE%", myRequest.getResponse()));
         }
-
-            /* Getting response
-            else if (args[0].equalsIgnoreCase("get")) {
-                String response = myRequest.getResponse();
-                if (sender instanceof Player) {
-                    sendRequestMessage((Player) sender, args[1], myRequest.getResponse(), myRequest.getResponseCode());
-                    return true;
-                }
-                Other.log(Config.MSG_SENDING_REQUEST.replace("ID", args[1]).replace("RESPONSE", response));
-            }
-             */
         return true;
     }
 
@@ -98,4 +87,31 @@ public class Request implements CommandExecutor {
 
         sender.sendMessage(component);
     }
+
+            /*
+            {"b":[{"body":"test1", "body2":"test2"}], "h":[{"header":"test2", "header2":"test"}]}
+            JSONObject json = null;
+            try {
+                json = (JSONObject) new JSONParser().parse(params);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            if (json == null)
+                return true;
+
+            Map body = myRequest.getBody();
+            JSONArray jsonArray = (JSONArray) json.get("b");
+            for (Object obj : jsonArray) {
+                JSONObject jsonObject = (JSONObject) obj;
+                for (Object key : jsonObject.keySet()) {
+                    String k = key.toString();
+                    if (!body.containsKey(k))
+                        continue;
+
+                    String v = jsonObject.get(k).toString();
+                    body.put(k, v);
+                }
+            }
+            */
 }
