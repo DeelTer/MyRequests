@@ -158,8 +158,8 @@ public class MyRequest implements Cloneable {
         try (CloseableHttpClient httpClient = HttpClients.createDefault();
              CloseableHttpResponse response = httpClient.execute(isGET ? get : post)) {
 
-             this.response = EntityUtils.toString(response.getEntity());
-             this.code = response.getStatusLine().getStatusCode();
+            this.response = EntityUtils.toString(response.getEntity());
+            this.code = response.getStatusLine().getStatusCode();
         } catch (IOException e) {
             e.printStackTrace();
         }
