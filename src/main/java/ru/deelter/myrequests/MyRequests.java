@@ -24,12 +24,18 @@ public final class MyRequests extends JavaPlugin {
             Other.log("&cThe config doesn't exist. Create a new one");
             saveDefaultConfig();
         }
-
         Config.reload();
         MyRequest.load();
-
         getCommand("myrequest").setExecutor(new Request());
-        Other.log("&fPlugin successfully enabled");
+
+        /* Final console icon */
+        Other.log("\n" +
+                "&8######################################### \n" +
+                "&6█▄&f░&6▄█ ▀▄&f░&6▄▀ █▀▀▄ █▀▀ ▄▀█ █&f░&6█ █▀▀ ▄▀▀ ▀█▀ \n" +
+                "&6█&f░&6█&f░&6█ &f░░&6█&f░░&6 █▐█▀ █▀▀ █&f░&6█ █&f░&6█ █▀▀ &f░&6▀▄ &f░&6█&f░ \n" +
+                "&6▀&f░░░&6▀ &f░░&6▀&f░░ &6▀&f░&6▀▀ ▀▀▀ &f░&6▀█ &f░&6▀&f░ &6▀▀▀ ▀▀&f░ ░&6▀&f░ \n" +
+                "&8            &fBY DEELTER\n" +
+                "&8#########################################");
     }
 
     @Override

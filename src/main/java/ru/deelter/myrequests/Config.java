@@ -30,7 +30,6 @@ public class Config {
                 Other.log(PLACEHOLDER_API ? "&fModule &ePlaceholder-API&f successfully enabled" : "&cError: &6Placeholder-API&c not found");
             }
             PLUGIN_API = settings.getBoolean("plugin-api");
-            SPACE_SYMBOL = settings.getString("space-symbol");
 
             /* Logs settings */
             CONSOLE_LOGS = settings.getBoolean("console-logs");
