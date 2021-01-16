@@ -1,9 +1,6 @@
 package ru.deelter.myrequests.utils;
 
-import okhttp3.FormBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import okhttp3.*;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import ru.deelter.myrequests.Config;
@@ -14,7 +11,6 @@ import ru.deelter.myrequests.utils.managers.LoggerManager;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class MyRequest implements Cloneable {
 
@@ -119,7 +115,7 @@ public class MyRequest implements Cloneable {
             requestBuilder.url(url);
 
             header.forEach(requestBuilder::addHeader);
-            final FormBody body = formBody.build();
+            FormBody body = formBody.build();
             requestBuilder.post(body);
 
             request = requestBuilder.build();
