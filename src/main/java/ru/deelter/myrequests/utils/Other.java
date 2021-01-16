@@ -5,7 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import ru.deelter.myrequests.Config;
-import ru.deelter.myrequests.Main;
+import ru.deelter.myrequests.MyRequests;
 
 import java.util.UUID;
 
@@ -17,7 +17,7 @@ public class Other {
 
     public static void log(String s) {
         if (Config.CONSOLE_LOGS)
-            Main.getInstance().getLogger().info(color(s));
+            MyRequests.getInstance().getLogger().info(color(s));
     }
 
     public static String setPlaceholders(String text) {

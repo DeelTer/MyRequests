@@ -7,6 +7,7 @@ import ru.deelter.myrequests.utils.Other;
 
 public class Config {
 
+    public static String SPACE_SYMBOL = "%20";
     /* Messages */
     public static String MSG_INVALID_ID;
     public static String MSG_SENDING_REQUEST;
@@ -20,7 +21,7 @@ public class Config {
     public static boolean PLUGIN_API = false;
 
     public static void reload() {
-        FileConfiguration config = Main.getInstance().getConfig();
+        FileConfiguration config = MyRequests.getInstance().getConfig();
         ConfigurationSection settings = config.getConfigurationSection("settings");
         if (settings != null) {
             /* PlaceholderAPI hook */
@@ -29,6 +30,7 @@ public class Config {
                 Other.log(PLACEHOLDER_API ? "&fModule &ePlaceholder-API&f successfully enabled" : "&cError: &6Placeholder-API&c not found");
             }
             PLUGIN_API = settings.getBoolean("plugin-api");
+            SPACE_SYMBOL = settings.getString("space-symbol");
 
             /* Logs settings */
             CONSOLE_LOGS = settings.getBoolean("console-logs");
@@ -43,6 +45,6 @@ public class Config {
             MSG_NO_PERMISSION = Other.color(messages.getString("no-permission"));
             MSG_PLAYER_REQUEST = Other.color(messages.getString("player-request"));
         }
-        Main.getInstance().reloadConfig();
+        MyRequests.getInstance().reloadConfig();
     }
 }

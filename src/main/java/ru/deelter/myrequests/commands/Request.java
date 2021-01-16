@@ -7,47 +7,19 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 import ru.deelter.myrequests.Config;
 import ru.deelter.myrequests.utils.MyRequest;
 import ru.deelter.myrequests.utils.Other;
 
+import java.util.HashMap;
+
 public class Request implements CommandExecutor {
+
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (args[0] == null) {
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (args.length < 1) {
             sender.sendMessage(Other.color("&6# &fUsage: " + label + " &a[send|reload|get>] <id>"));
             return true;
-        }
-
-        if (args[1] != null) {
-            MyRequest myRequest = MyRequest.getRequest(args[1]);
-            if (myRequest == null) {
-                sender.sendMessage(Config.MSG_INVALID_ID);
-                return true;
-            }
-
-            /* Send request command */
-            if (args[0].equalsIgnoreCase("send")) {
-                myRequest.send();
-
-                String response = myRequest.getResponse();
-                if (sender instanceof Player) {
-                    sendRequestMessage((Player) sender, args[1], myRequest.getResponse(), myRequest.getResponseCode());
-                    return true;
-                }
-                Other.log(Config.MSG_SENDING_REQUEST.replace("ID", args[1]).replace("RESPONSE", response));
-            }
-
-            /* Getting response */
-            else if (args[0].equalsIgnoreCase("get")) {
-                String response = myRequest.getResponse();
-                if (sender instanceof Player) {
-                    sendRequestMessage((Player) sender, args[1], myRequest.getResponse(), myRequest.getResponseCode());
-                    return true;
-                }
-                Other.log(Config.MSG_SENDING_REQUEST.replace("ID", args[1]).replace("RESPONSE", response));
-            }
         }
 
         /* Reload configuration command */
@@ -57,7 +29,61 @@ public class Request implements CommandExecutor {
                 return true;
             }
             Config.reload();
+            return true;
         }
+
+        if (args.length < 2) {
+            sender.sendMessage(Other.color("&6# &fUsage: " + label + " &a[send|reload|get>] <id>"));
+            return true;
+        }
+
+        MyRequest myRequest = MyRequest.getRequest(args[1]);
+        if (myRequest == null) {
+            sender.sendMessage(Config.MSG_INVALID_ID);
+            return true;
+        }
+
+        myRequest = myRequest.clone();
+
+        /* Send request command */
+        if (args[0].equalsIgnoreCase("send")) {
+            if (args.length == 3) {
+
+                HashMap body = new HashMap<>(myRequest.getBody());
+                String[] params = args[2].split(",");
+                for (String param : params) {
+
+                    String[] entry = param.split("=");
+                    if (!body.containsKey(entry[0])) {
+                        sender.sendMessage(Other.color("&cПараметр &6" + entry[0] + "&c не найден"));
+                        return true;
+                    }
+
+                    /* With space %20 */
+                    String value = Other.setPlaceholders(entry[1].replace(Config.SPACE_SYMBOL, " "));
+                    body.replace(entry[0], value);
+                }
+                myRequest.setBody(body);
+            }
+
+            myRequest.send();
+            if (sender instanceof Player) {
+                sendRequestMessage((Player) sender, args[1], myRequest.getResponse(), myRequest.getResponseCode());
+                return true;
+            }
+            Other.log(Config.MSG_SENDING_REQUEST.replace("%ID%", args[1]).replace("%RESPONSE%", myRequest.getResponse()));
+        }
+
+            /* Getting response
+            else if (args[0].equalsIgnoreCase("get")) {
+                String response = myRequest.getResponse();
+                if (sender instanceof Player) {
+                    sendRequestMessage((Player) sender, args[1], myRequest.getResponse(), myRequest.getResponseCode());
+                    return true;
+                }
+                Other.log(Config.MSG_SENDING_REQUEST.replace("ID", args[1]).replace("RESPONSE", response));
+            }
+             */
         return true;
     }
 

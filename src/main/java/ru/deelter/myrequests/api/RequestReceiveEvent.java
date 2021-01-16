@@ -9,24 +9,25 @@ public class RequestReceiveEvent extends Event {
 
     private final String id;
     private final String response;
-    private final int code;
 
-    public RequestReceiveEvent(String id, String response, int responseCode, int code) {
+    private int code;
+
+    public RequestReceiveEvent(String id, String response, int code) {
         this.id = id;
-        this.response = response;
         this.code = code;
+        this.response = response;
     }
 
     public String getId() {
         return id;
     }
 
-    public String getResponse() {
-        return response;
-    }
-
     public int getCode() {
         return code;
+    }
+
+    public String getResponse() {
+        return response;
     }
 
     public HandlerList getHandlers() {

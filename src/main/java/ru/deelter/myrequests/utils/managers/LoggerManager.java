@@ -1,7 +1,7 @@
 package ru.deelter.myrequests.utils.managers;
 
 import ru.deelter.myrequests.Config;
-import ru.deelter.myrequests.Main;
+import ru.deelter.myrequests.MyRequests;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -18,7 +18,7 @@ public class LoggerManager {
             return;
 
         String date = new SimpleDateFormat("[dd-MM-yyyy]").format(new Date());
-        File folder = new File(Main.getInstance().getDataFolder() + File.separator + "logs");
+        File folder = new File(MyRequests.getInstance().getDataFolder() + File.separator + "logs");
         if (!folder.exists())
             folder.mkdir();
 
@@ -38,7 +38,7 @@ public class LoggerManager {
 
             FileWriter writer = new FileWriter(file.getPath(), true);
             BufferedWriter bufferWriter = new BufferedWriter(writer);
-            bufferWriter.write("\nid: '" + id + "'\nresponse-code: " + code + "\nresponse: '" + response + "'");
+            bufferWriter.write("\nid: '" + id + "\ncode: '" + code + "'" + "\nresponse: '" + response + "'");
             bufferWriter.close();
         } catch (IOException e) {
             e.printStackTrace();

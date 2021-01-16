@@ -1,6 +1,6 @@
 name: MyRequests
 version: ${project.version}
-main: ru.deelter.myrequests.Main
+main: ru.deelter.myrequests.MyRequests
 api-version: 1.16
 prefix: MyRequest
 

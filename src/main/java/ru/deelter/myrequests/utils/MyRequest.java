@@ -1,46 +1,60 @@
 package ru.deelter.myrequests.utils;
 
-import okhttp3.FormBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 
-import okhttp3.Response;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
+
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+
+import org.jetbrains.annotations.NotNull;
 import ru.deelter.myrequests.Config;
-import ru.deelter.myrequests.Main;
+import ru.deelter.myrequests.MyRequests;
 import ru.deelter.myrequests.api.RequestReceiveEvent;
 import ru.deelter.myrequests.utils.managers.LoggerManager;
 import ru.deelter.myrequests.utils.managers.TimerManager;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.io.UnsupportedEncodingException;
+import java.util.*;
 
-public class MyRequest {
-
-    private final OkHttpClient client = new OkHttpClient();
+public class MyRequest implements Cloneable {
 
     private static final Map<String, MyRequest> requests = new HashMap<>();
+
     private final Map<String, String> headers = new HashMap<>();
-    private final Map<String, String> body = new HashMap<>();
+    private Map<String, String> body = new HashMap<>();
 
-    private String id;
+    private String id, response;
     private final String url;
-    private String response;
 
-    private int responseCode;
+    private int code;
     private boolean isGET = true;
 
     public MyRequest(String url) {
         this.url = url;
     }
 
+    @NotNull
+    public MyRequest clone() {
+        try {
+            return (MyRequest) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new Error(e);
+        }
+    }
+
     public static void load() {
 
-        FileConfiguration config = Main.getInstance().getConfig();
+        FileConfiguration config = MyRequests.getInstance().getConfig();
         ConfigurationSection requests = config.getConfigurationSection("requests");
         if (requests == null) {
             Other.log("&cВ конфиге нет раздела 'requests'");
@@ -98,13 +112,17 @@ public class MyRequest {
         body.put(key, value);
     }
 
+    public void setBody(Map<String, String> body) {
+        this.body = body;
+    }
+
+    public Map getBody() {
+        return body;
+    }
+
     /* Get methods */
     public String getResponse() {
         return response;
-    }
-
-    public int getResponseCode() {
-        return responseCode;
     }
 
     public static MyRequest getRequest(String id) {
@@ -114,55 +132,55 @@ public class MyRequest {
         return requests.get(id);
     }
 
+    /* Sending */
+    public void send() {
+        HttpGet get = null;
+        HttpPost post = null;
+        if (isGET) {
+            get = new HttpGet(url);
+            headers.forEach(get::addHeader);
+
+            List<NameValuePair> params = new ArrayList<>();
+            body.forEach((key, value) -> params.add(new BasicNameValuePair(key, value)));
+        } else {
+            post = new HttpPost(url);
+            headers.forEach(post::addHeader);
+
+            List<NameValuePair> params = new ArrayList<>();
+            body.forEach((key, value) -> params.add(new BasicNameValuePair(key, value)));
+            try {
+                post.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
+
+        try (CloseableHttpClient httpClient = HttpClients.createDefault();
+             CloseableHttpResponse response = httpClient.execute(isGET ? get : post)) {
+
+             this.response = EntityUtils.toString(response.getEntity());
+             this.code = response.getStatusLine().getStatusCode();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        LoggerManager.log(id, response, code);
+
+        /* Call event for api */
+        if (Config.PLUGIN_API) {
+            Bukkit.getScheduler().scheduleSyncDelayedTask(MyRequests.getInstance(), () -> {
+                RequestReceiveEvent receiveEvent = new RequestReceiveEvent(id, response, code);
+                Bukkit.getPluginManager().callEvent(receiveEvent);
+            });
+        }
+    }
+
     /* other */
     public void register() {
         requests.put(id, this);
     }
 
-    /* Sending */
-    public void send() {
-        Request request;
-        /* SEND GET */
-        if (isGET) {
-            Request.Builder builder = new Request.Builder();
-            builder.url(url);
-
-            headers.forEach(builder::addHeader);
-            request = builder.build();
-        }
-        /* Send POST */
-        else {
-            FormBody.Builder formBody = new FormBody.Builder();
-            body.forEach(formBody::add);
-
-            Request.Builder requestBuilder = new Request.Builder();
-            requestBuilder.url(url);
-
-            headers.forEach(requestBuilder::addHeader);
-            final FormBody body = formBody.build();
-            requestBuilder.post(body);
-
-            request = requestBuilder.build();
-        }
-        /* Sending */
-        try (Response response = client.newCall(request).execute()) {
-            this.responseCode = response.code();
-            if(!response.isSuccessful())
-                return;
-
-            this.response = Objects.requireNonNull(response.body()).string();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        LoggerManager.log(id, response, responseCode);
-
-        /* Call event for api */
-        if (Config.PLUGIN_API) {
-            Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getInstance(), () -> {
-                RequestReceiveEvent receiveEvent = new RequestReceiveEvent(id, response, responseCode, responseCode);
-                Bukkit.getPluginManager().callEvent(receiveEvent);
-            });
-        }
+    public int getResponseCode() {
+        return code;
     }
 }

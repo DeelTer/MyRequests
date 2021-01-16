@@ -8,7 +8,7 @@ import ru.deelter.myrequests.utils.Other;
 import java.io.File;
 import java.util.Objects;
 
-public final class Main extends JavaPlugin {
+public final class MyRequests extends JavaPlugin {
 
     private static JavaPlugin instance;
 
