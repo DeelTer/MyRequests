@@ -6,7 +6,7 @@
 
     <groupId>ru.deelter</groupId>
     <artifactId>MyRequests</artifactId>
-    <version>3.0</version>
+    <version>4.0</version>
     <packaging>jar</packaging>
 
     <name>MyRequests</name>

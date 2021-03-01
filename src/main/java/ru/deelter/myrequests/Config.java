@@ -21,6 +21,8 @@ public class Config {
     public static boolean PLUGIN_API = false;
 
     public static void reload() {
+        MyRequests.getInstance().reloadConfig();
+        
         FileConfiguration config = MyRequests.getInstance().getConfig();
         ConfigurationSection settings = config.getConfigurationSection("settings");
         if (settings != null) {
@@ -44,6 +46,5 @@ public class Config {
             MSG_NO_PERMISSION = Other.color(messages.getString("no-permission"));
             MSG_PLAYER_REQUEST = Other.color(messages.getString("player-request"));
         }
-        MyRequests.getInstance().reloadConfig();
     }
 }

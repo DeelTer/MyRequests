@@ -116,7 +116,7 @@ public class MyRequest implements Cloneable {
         this.body = body;
     }
 
-    public Map getBody() {
+    public Map<String, String> getBody() {
         return body;
     }
 
