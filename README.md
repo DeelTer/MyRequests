@@ -1,4 +1,4 @@
-<img src="https://sun9-13.userapi.com/IBRDysv-LR-m_2FyihI86kXLHyA2vbvyopYZ0A/P1jNGzDqzrc.jpg" alt="DeelTer Face" align="right">
+<img src="https://sun9-63.userapi.com/impg/-Et3l3Xr1ayylmIB1CS3JYDNTTz2swc9X4-xpQ/EZ9Hzq1p_sA.jpg?size=300x300&quality=96&sign=b1906ac200a2d3d49401fe2a5d31b0b2&type=album" alt="DeelTer Face" align="right">
 <div align="center">
   <h1>MyRequests</h1>
   <h3>Minecraft plugin for easy requests sending</h3>
